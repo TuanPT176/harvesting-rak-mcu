@@ -77,7 +77,7 @@ void LoRaWAN::begin() {
     Serial.printf("LoRaWan ABP - set retry times is incorrect! \r\n");
     return;
   }
-  if (!api.lorawan.cfm.set(1)) {
+  if (!api.lorawan.cfm.set(0)) {
     Serial.printf("LoRaWan ABP - set confirm mode is incorrect! \r\n");
     return;
   }
@@ -88,7 +88,7 @@ void LoRaWAN::begin() {
   uint8_t assigned_dev_addr[4] = { 0 };
   api.lorawan.daddr.get(assigned_dev_addr, 4);
   Serial.printf("Device Address is %02X%02X%02X%02X\r\n", assigned_dev_addr[0], assigned_dev_addr[1], assigned_dev_addr[2], assigned_dev_addr[3]);  // Check Device Address
-  Serial.printf("Uplink period is %ums\r\n", ABP_PERIOD);
+  // Serial.printf("Uplink period is %ums\r\n", ABP_PERIOD);
   Serial.println("");
   api.lorawan.registerRecvCallback(recvCallback);
   api.lorawan.registerSendCallback(sendCallback);
@@ -118,7 +118,7 @@ void LoRaWAN::uplink_routine()
   Serial.println("");
 
   /** Send the data package */
-  if (api.lorawan.send(data_len, (uint8_t *)&collected_data, 2, false, 0))
+  if (api.lorawan.send(data_len, (uint8_t *)&collected_data, 2, false,0))
   {
     Serial.println("Sending is requested");
   }
@@ -130,7 +130,7 @@ void LoRaWAN::uplink_routine()
 
 void LoRaWAN::sleep(uint32_t sleeptime)
 {
-    Serial.printf("Try sleep %ums..", sleeptime);
+    Serial.printf("Try sleep %us..", sleeptime);
       estimatedNextUplink = millis() + sleeptime;
       api.system.sleep.all(d.sleepTime * 1000);
 }

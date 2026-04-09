@@ -15,6 +15,7 @@ uint16_t current_x10;
 uint32_t lastCheck = 0;
 void setup() {
   Serial.begin(115200, RAK_AT_MODE);
+  Serial.println("=========RESET=========");
   lora.begin();
   pmic.begin();
   pmic.writeAllConfigs();

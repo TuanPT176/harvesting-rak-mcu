@@ -3,7 +3,7 @@
 void SensorManager::begin() {
   if (!shtc3.begin()) {
     Serial.println("SHTC3 not found");
-  }else Serial.println("Found SHTC3 sensor");
+  } else Serial.println("Found SHTC3 sensor");
   analogReadResolution(14);
 }
 
@@ -23,12 +23,16 @@ SensorData SensorManager::read() {
   adc_value = analogRead(VBAT_PIN);
   Serial.print("adc_value: ");
   Serial.println(adc_value);
-  float voltage = ref * ((float)adc_value / max)* 1.5;
+  float voltage = ref * ((float)adc_value / max) * 3;
   Serial.print("SupCap: ");
-  Serial.print(voltage,3);
+  Serial.print(voltage, 3);
+  Serial.print("V - ");
+  d.vbat = voltage;
+  Serial.print("SupCap: ");
+  Serial.print(d.vbat, 3);
   Serial.println("V");
 
-  d.vbat = voltage;
+
 
   return d;
 }

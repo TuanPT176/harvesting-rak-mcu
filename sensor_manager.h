@@ -8,7 +8,7 @@
 struct SensorData {
   int16_t temp;
   uint8_t humi;
-  uint16_t vbat;
+  float vbat;
 };
 
 class SensorManager {
