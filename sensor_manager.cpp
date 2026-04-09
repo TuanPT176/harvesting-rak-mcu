@@ -23,7 +23,7 @@ SensorData SensorManager::read() {
   adc_value = analogRead(VBAT_PIN);
   Serial.print("adc_value: ");
   Serial.println(adc_value);
-  float voltage = ref * ((float)adc_value / max) * 3;
+  float voltage = ref * ((float)adc_value / max) * 2.5;
   Serial.print("SupCap: ");
   Serial.print(voltage, 3);
   Serial.print("V - ");

@@ -110,6 +110,8 @@ void LoRaWAN::uplink_routine()
   collected_data[data_len++] = (current_x10 >> 8) & 0xFF;
   collected_data[data_len++] = current_x10 & 0xFF;
 
+  collected_data[data_len++] = (uint8_t)d.state & 0xFF;
+
   Serial.println("Data Packet:");
   for (int i = 0; i < data_len; i++)
   {

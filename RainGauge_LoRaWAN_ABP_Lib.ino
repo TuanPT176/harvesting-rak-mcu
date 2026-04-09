@@ -31,7 +31,8 @@ void loop() {
   g_sensor = sensor.read();
 
   d = makeDecision(g_sensor.vbat, current_x10);
-
+  Serial.print("State: ");
+  Serial.println(d.state);
   if (d.sendNow) {
     lora.uplink_routine();
     delay(200); // đảm bảo TX done
