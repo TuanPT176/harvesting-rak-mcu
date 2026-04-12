@@ -65,6 +65,11 @@ uint16_t NEH7100::getCurrent_uA_x10() {
 void NEH7100::ensureConfig() {
   readAll();
 
+  if (reg[0x00] != REG00_EXPECTED) {
+    writeRegister(0x00, REG00_EXPECTED);
+    delay(10);
+  }
+
   if (reg[0x01] != REG01_EXPECTED) {
     writeRegister(0x01, REG01_EXPECTED);
     delay(10);
@@ -78,5 +83,31 @@ void NEH7100::ensureConfig() {
   if (reg[0x05] != REG05_EXPECTED) {
     writeRegister(0x05, REG05_EXPECTED);
     delay(10);
+  }
+}
+
+void NEH7100::setFrequency(uint8_t fmax, uint8_t fmin) {
+  uint8_t val = encodeFreq(fmax, fmin);
+  writeRegister(0x03, val);
+  delay(10);
+}
+
+void NEH7100::updateFrequency(uint16_t current_uA) {
+
+  if (current_uA < 20) {
+    // Night
+    setFrequency(FREQ_64K, FREQ_32K);
+  }
+  else if (current_uA < 100) {
+    // Weak light
+    setFrequency(FREQ_128K, FREQ_32K);
+  }
+  else if (current_uA < 250) {
+    // Medium
+    setFrequency(FREQ_512K, FREQ_64K);
+  }
+  else {
+    // Strong
+    setFrequency(FREQ_1M, FREQ_128K);
   }
 }
