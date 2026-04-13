@@ -92,6 +92,10 @@ void NEH7100::setFrequency(uint8_t fmax, uint8_t fmin) {
   delay(10);
 }
 
+uint8_t NEH7100::encodeFreq(uint8_t fmax, uint8_t fmin) {
+  return (fmax << 4) | (fmin);
+}
+
 void NEH7100::updateFrequency(uint16_t current_uA) {
 
   if (current_uA < 20) {

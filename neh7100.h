@@ -27,6 +27,7 @@ public:
   void writeAllConfigs();
   uint16_t getCurrent_uA_x10();
   void ensureConfig();
+  uint8_t encodeFreq(uint8_t fmax, uint8_t fmin);
   void setFrequency(uint8_t fmax, uint8_t fmin);
   void updateFrequency(uint16_t current_uA);
   uint8_t reg[11];
