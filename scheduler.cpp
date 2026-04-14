@@ -4,7 +4,7 @@ Decision makeDecision(float vbat, uint16_t current) {
   Decision d;
 
   // 🔹 Default (fallback an toàn)
-  d.sendNow = false;
+  d.sendNow = true;
   d.sleepTime = 1200; // 20 phút
   d.state = 0;
   // d.sleepTime = 30;
