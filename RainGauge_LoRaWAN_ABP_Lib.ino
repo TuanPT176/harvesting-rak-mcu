@@ -42,6 +42,7 @@ void loop() {
   Serial.println(d.state);
   if (d.sendNow && !tx_pending) {
         tx_pending = true;
+        tx_done = false;
         lora.uplink_routine();
     }
 
