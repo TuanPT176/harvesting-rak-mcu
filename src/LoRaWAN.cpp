@@ -115,7 +115,7 @@
 //     collected_data[len++] = d.state;
 
 //     // Lux (optional – chỉ có trên RAK3172)
-//     #if USE_LTR303
+//     #if USE_RAK3172
 //     uint16_t lux = (uint16_t)(g_sensor.lux + 0.5);
 //     collected_data[len++] = (lux >> 8) & 0xFF;
 //     collected_data[len++] = lux & 0xFF;
@@ -178,12 +178,11 @@ void LoRaWAN::sendCallback(int32_t status)
   } else {
     Serial.println("Sending failed");
   }
-  Serial.println("+EVT:TX_DONE");
   tx_done = true;
 }
 
 void LoRaWAN::begin() {
-  #if USE_LTR303
+  #if USE_RAK3172
   
   #else
     api.ble.uart.setPermission(RAK_SET_ENC_WITH_MITM);
@@ -222,7 +221,7 @@ void LoRaWAN::begin() {
     return;
   }
 
-  #if USE_LTR303
+  #if USE_RAK3172
   if (!api.lorawan.adr.set(true)) {
         Serial.printf("LoRaWan ABP - set adaptive data rate is incorrect! \r\n");
         return;

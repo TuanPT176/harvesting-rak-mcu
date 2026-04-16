@@ -1,10 +1,10 @@
 #ifndef config_h
 #define config_h
-#define USE_LTR303 1
+#define USE_RAK3172 1
 
 
 // Pins
-  #if USE_LTR303
+  #if USE_RAK3172
   #define VBAT_PIN PA15
   #else
   #define VBAT_PIN 33

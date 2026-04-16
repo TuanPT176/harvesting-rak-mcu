@@ -5,9 +5,9 @@
 #include "Adafruit_SHTC3.h"
 #include "config.h"
 
-#define USE_LTR303 1   // RAK3172 = 1, RAK11720 = 0
+#define USE_RAK3172 1   // RAK3172 = 1, RAK11720 = 0
 
-#if USE_LTR303
+#if USE_RAK3172
 #include "Adafruit_LTR329_LTR303.h"
 #endif
 
@@ -25,7 +25,7 @@ public:
 
 private:
   Adafruit_SHTC3 shtc3;
-  #if USE_LTR303
+  #if USE_RAK3172
   Adafruit_LTR303 ltr;
 
   float getLux(uint16_t ch0, uint16_t ch1);

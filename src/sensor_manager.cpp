@@ -1,6 +1,6 @@
 #include "sensor_manager.h"
 
-#if USE_LTR303
+#if USE_RAK3172
 static float a = 6.35;
 static float b = 50;
 #endif
@@ -10,7 +10,7 @@ void SensorManager::begin() {
     Serial.println("SHTC3 not found");
   } else Serial.println("Found SHTC3 sensor");
   analogReadResolution(12);
-  #if USE_LTR303
+  #if USE_RAK3172
   if (!ltr.begin()) {
     Serial.println("LTR303 not found!");
   } else {
@@ -46,18 +46,18 @@ SensorData SensorManager::read() {
   Serial.print(voltage, 3);
   Serial.print("V - ");
   d.vbat = voltage;
-  #if USE_LTR303
+  #if USE_RAK3172
   d.lux = 0;
   if (ltr.newDataAvailable()) {
     uint16_t ch0, ch1;
 
     if (ltr.readBothChannels(ch0, ch1)) {
       float lux_raw = getLux(ch0, ch1);
-      float lux_cal = calibrateLux(lux_raw);
-      d.lux = lux_cal;
+      // float lux_cal = calibrateLux(lux_raw);
+      d.lux = lux_raw;
 
       Serial.print("Lux: ");
-      Serial.println(lux_cal);
+      Serial.println(lux_raw);
     }
   }
   #else
@@ -66,27 +66,10 @@ SensorData SensorManager::read() {
   return d;
 }
 
-#if USE_LTR303
+#if USE_RAK3172
 float SensorManager::getLux(uint16_t ch0, uint16_t ch1) {
-  if (ch0 == 0) return 0;
-
-  float ratio = (float)ch1 / ch0;
-  float lux = 0;
-
-  if (ratio < 0.5) {
-    lux = (0.0304 * ch0) - (0.062 * ch0 * pow(ratio, 1.4));
-  } else if (ratio < 0.61) {
-    lux = (0.0224 * ch0) - (0.031 * ch1);
-  } else if (ratio < 0.80) {
-    lux = (0.0128 * ch0) - (0.0153 * ch1);
-  } else if (ratio < 1.30) {
-    lux = (0.00146 * ch0) - (0.00112 * ch1);
-  } else {
-    lux = 0;
-  }
-  // normalize gain = 48
-  lux = lux / 48.0;
-
+  float lux = 0.07f * ch0 - 0.02f * ch1;
+  if (lux < 0) lux = 0;
   return lux;
 }
 
