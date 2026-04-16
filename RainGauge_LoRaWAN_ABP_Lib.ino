@@ -1,8 +1,12 @@
+#define USE_LTR303 1
+
 #include "src/config.h"
 #include "src/neh7100.h"
 #include "src/sensor_manager.h"
-#include "LoRaWAN.h"
-#include "scheduler.h"
+#include "src/LoRaWAN.h"
+#include "src/scheduler.h"
+
+
 
 NEH7100 pmic;
 SensorManager sensor;
@@ -13,6 +17,8 @@ SensorData g_sensor;
 Decision d;
 uint16_t current_x10;
 uint32_t lastCheck = 0;
+bool tx_done;
+
 void setup() {
   Serial.begin(115200, RAK_AT_MODE);
   Serial.println("=========RESET=========");
@@ -24,7 +30,7 @@ void setup() {
 }
 
 void loop() {
-
+   static bool tx_pending = false;
   pmic.readAll();
   current_x10 = pmic.getCurrent_uA_x10();
   pmic.ensureConfig();
@@ -34,11 +40,16 @@ void loop() {
   d = makeDecision(g_sensor.vbat, current_x10);
   Serial.print("State: ");
   Serial.println(d.state);
-  if (d.sendNow) {
-    lora.uplink_routine();
-    delay(200); // đảm bảo TX done
-  }
-   lora.sleep(d.sleepTime);
+  if (d.sendNow && !tx_pending) {
+        tx_pending = true;
+        lora.uplink_routine();
+    }
 
+    if (tx_done) {
+        tx_done = false;
+        tx_pending = false;
+
+        lora.sleep(d.sleepTime);
+    }
   
 }

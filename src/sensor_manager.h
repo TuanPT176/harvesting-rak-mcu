@@ -5,10 +5,17 @@
 #include "Adafruit_SHTC3.h"
 #include "config.h"
 
+#define USE_LTR303 1   // RAK3172 = 1, RAK11720 = 0
+
+#if USE_LTR303
+#include "Adafruit_LTR329_LTR303.h"
+#endif
+
 struct SensorData {
   int16_t temp;
   uint8_t humi;
   float vbat;
+  float lux;
 };
 
 class SensorManager {
@@ -18,6 +25,12 @@ public:
 
 private:
   Adafruit_SHTC3 shtc3;
+  #if USE_LTR303
+  Adafruit_LTR303 ltr;
+
+  float getLux(uint16_t ch0, uint16_t ch1);
+  float calibrateLux(float lux_raw);
+#endif
 };
 
 #endif
