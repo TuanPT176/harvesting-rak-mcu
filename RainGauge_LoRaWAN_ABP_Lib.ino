@@ -1,8 +1,8 @@
 #include "src/config.h"
 #include "src/neh7100.h"
 #include "src/sensor_manager.h"
-#include "src/LoRaWAN.h"
-#include "src/scheduler.h"
+#include "LoRaWAN.h"
+#include "scheduler.h"
 
 NEH7100 pmic;
 SensorManager sensor;
