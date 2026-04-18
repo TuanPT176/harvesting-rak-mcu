@@ -32,9 +32,7 @@ void setup() {
 void loop() {
   static bool tx_pending = false;
 
-  if (tx_pending) {
-        return;
-    }
+  sensor.SensorWake();
   pmic.readAll();
   current_x10 = pmic.getCurrent_uA_x10();
   pmic.ensureConfig();
@@ -44,19 +42,33 @@ void loop() {
   d = makeDecision(g_sensor.vbat, current_x10);
   Serial.print("State: ");
   Serial.println(d.state);
-    if (d.sendNow && !tx_pending) {
-        tx_pending = true;
-        tx_done = false;
-        lora.uplink_routine();
-    }
-    else if (!tx_pending) {
-    lora.sleep(d.sleepTime);
+
+// Nếu đang gửi → không làm gì, chờ TX_DONE
+    if (tx_pending)
+    {
+        if (tx_done)
+        {
+            Serial.println("TX done → go sleep");
+            tx_done = false;
+            tx_pending = false;
+
+            lora.sleep(d.sleepTime);
+        }
+        return;
     }
 
-    if (tx_done) {
+    // Nếu cần gửi
+    if (d.sendNow)
+    {
         tx_done = false;
-        tx_pending = false;
-
+        if (lora.uplink_routine())
+        {
+            tx_pending = true;
+        }
+        lora.sleep(d.sleepTime);
+    }
+    else
+    {
         lora.sleep(d.sleepTime);
     }
 }

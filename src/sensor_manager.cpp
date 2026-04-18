@@ -10,6 +10,7 @@ void SensorManager::begin() {
     Serial.println("SHTC3 not found");
   } else Serial.println("Found SHTC3 sensor");
   analogReadResolution(12);
+  Wire.begin();
   #if USE_RAK3172
   if (!ltr.begin()) {
     Serial.println("LTR303 not found!");
@@ -64,6 +65,33 @@ SensorData SensorManager::read() {
   d.lux = 0;
   #endif
   return d;
+}
+
+void SensorManager::SensorSleep() {
+  // ===== SHTC3 sleep =====
+  Wire.beginTransmission(0x70);
+  Wire.write(0xB0);
+  Wire.write(0x98);
+  Wire.endTransmission();
+  #if USE_RAK3172
+    ltr.enable(false); 
+  #endif
+
+  Serial.println("Sensors → Sleep");
+}
+
+void SensorManager::SensorWake() {
+  Wire.beginTransmission(0x70);
+  Wire.write(0x35);
+  Wire.write(0x17);
+  Wire.endTransmission();
+  delay(1);
+  #if USE_RAK3172
+    ltr.enable(true);
+  #endif
+  
+
+  Serial.println("Sensors → Wake");
 }
 
 #if USE_RAK3172

@@ -22,6 +22,8 @@ class SensorManager {
 public:
   void begin();
   SensorData read();
+  void SensorWake();
+  void SensorSleep();
 
 private:
   Adafruit_SHTC3 shtc3;

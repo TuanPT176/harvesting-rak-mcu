@@ -2,6 +2,7 @@
 #define scheduler_h
 
 #include <Arduino.h>
+#include <Wire.h>
 #include "config.h"
 
 struct Decision {

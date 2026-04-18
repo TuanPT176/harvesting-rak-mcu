@@ -26,7 +26,7 @@ void LoRaWAN::recvCallback(SERVICE_LORA_RECEIVE_T * data)
 
 void LoRaWAN::sendCallback(int32_t status)
 {
-  if (status == 0) {
+  if (status == RAK_LORAMAC_STATUS_OK) {
     Serial.println("Successfully sent");
   } else {
     Serial.println("Sending failed");
@@ -137,7 +137,7 @@ void LoRaWAN::begin() {
 
 }
 
-void LoRaWAN::uplink_routine()
+bool  LoRaWAN::uplink_routine()
 {
   /** Payload of Uplink */
   uint8_t data_len = 0;
@@ -171,15 +171,18 @@ void LoRaWAN::uplink_routine()
   if (api.lorawan.send(data_len, (uint8_t *)&collected_data, 2, false,0))
   {
     Serial.println("Sending is requested");
+    return true;
   }
   else
   {
     Serial.println("Sending failed");
+    return false;
   }
 }
 
 void LoRaWAN::sleep(uint32_t sleeptime)
 {
+    sensor.SensorSleep();
     Serial.printf("Try sleep %us..", sleeptime);
       estimatedNextUplink = millis() + sleeptime;
       api.system.sleep.all(d.sleepTime * 1000);

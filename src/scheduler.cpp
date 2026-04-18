@@ -53,7 +53,7 @@ Decision makeDecision(float vbat, uint16_t current) {
   // 🔵 HIGH
   else {
     d.sendNow = true;
-    d.sleepTime = 600; // 10 phút
+    d.sleepTime = 300; // 10 phút
     d.state = 0;
     // d.sleepTime = 30;
   }
