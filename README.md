@@ -89,7 +89,7 @@ Solar Panel → NEH7100 → Supercapacitor → MCU (RAK3172)
 Edit `config.h` and `sensor_manager.h`:
 
 ```cpp id="i2z2p3"
-#define USE_RAK3172 1
+#define USE_RAK3172 0
 #define VBAT_PIN PA15
 ```
 

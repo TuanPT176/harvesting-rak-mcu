@@ -112,6 +112,12 @@ void LoRaWAN::begin() {
   if (!api.lorawan.adr.set(true)) {
     Serial.printf("LoRaWan ABP - set adaptive data rate is incorrect! \r\n");
     return;
+  }
+
+  if (!api.lorawan.dr.set(5)) {
+    Serial.printf("LoRaWan ABP - set data rate incorrect! \r\n");
+    return;
+  }
 
   if (!api.lorawan.rety.set(1)) {
     Serial.printf("LoRaWan ABP - set retry times is incorrect! \r\n");
@@ -132,7 +138,6 @@ void LoRaWAN::begin() {
   Serial.println("");
   api.lorawan.registerRecvCallback(recvCallback);
   api.lorawan.registerSendCallback(sendCallback);
-  }
   #endif
 
 }
@@ -168,9 +173,11 @@ bool  LoRaWAN::uplink_routine()
   Serial.println("");
 
   /** Send the data package */
-  if (api.lorawan.send(data_len, (uint8_t *)&collected_data, 2, false,0))
+  if (api.lorawan.send(data_len, (uint8_t *)&collected_data, 2, false, 0))
   {
     Serial.println("Sending is requested");
+    // Feed watchdog sau send (send() có thể block lâu)
+    delay(100);
     return true;
   }
   else
@@ -183,7 +190,18 @@ bool  LoRaWAN::uplink_routine()
 void LoRaWAN::sleep(uint32_t sleeptime)
 {
     sensor.SensorSleep();
-    Serial.printf("Try sleep %us..", sleeptime);
-      estimatedNextUplink = millis() + sleeptime;
-      api.system.sleep.all(d.sleepTime * 1000);
+    Serial.printf("Try sleep %us..\r\n", sleeptime);
+    Serial.flush();  // Đợi serial ghi xong
+    
+    delay(100);      // Để stable trước khi sleep (quan trọng cho Apollo3)
+    
+    estimatedNextUplink = millis() + (sleeptime * 1000);
+    
+    #if USE_RAK3172
+    // RAK3172
+    api.system.sleep.all(sleeptime * 1000);
+    #else
+    // RAK11720 (Apollo3): Gọi sleep với timer wake-up
+    api.system.sleep.all(sleeptime * 1000);
+    #endif
 }

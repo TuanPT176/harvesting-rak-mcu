@@ -26,24 +26,45 @@ void SensorManager::begin() {
 
 SensorData SensorManager::read() {
   SensorData d;
-
   sensors_event_t humidity, temp;
   shtc3.getEvent(&humidity, &temp);
 
   d.temp = temp.temperature * 10;
   d.humi = humidity.relative_humidity;
 
-  int adc_value = analogRead(VBAT_PIN);
-  float max = 4095.0;
-  float ref = 2.4;
-  delay(500);
-  delay(500);
-  adc_value = analogRead(VBAT_PIN);
+  // ADC reading with proper settling time
+  #if USE_RAK3172
+  // RAK3172 - Original config
+  const float ADC_REF = 2.4;        // Reference voltage
+  const float ADC_MAX = 4095.0;     // 12-bit ADC
+  const float VOLTAGE_DIVIDER = 3.0;
+  #else
+  // RAK11720 - Calibrated config
+  // Calibration: ADC_raw=1886 -> VADC_pin=0.91V -> Vsource=2.73V
+  // Divider: R_top=2k, R_bottom=1k -> ratio=3.0
+  // Vref actual = 1.97V (calculated from: 0.91 * 4095 / 1886)
+  // Note: Vref deviation due to internal regulator variation and component tolerance
+  const float ADC_REF = 1.97;        // Actual reference voltage
+  const float ADC_MAX = 4095.0;      // 12-bit ADC
+  const float VOLTAGE_DIVIDER = 3.0; // (2k+1k)/1k
+  #endif
+  
+  // Read ADC multiple times and average for stability
+  int adc_sum = 0;
+  for (int i = 0; i < 10; i++) {
+    adc_sum += analogRead(VBAT_PIN);
+    delayMicroseconds(100);
+  }
+  int adc_value = adc_sum / 10;
+  
+  // Calculate battery voltage: V = (ADC_raw/4095) * Vref * divider_ratio
+  float voltage = (adc_value / ADC_MAX) * ADC_REF * VOLTAGE_DIVIDER;
+  
+  Serial.print("VBAT_PIN: ");
   Serial.print(VBAT_PIN);
-  Serial.print(" - adc_value ");
+  Serial.print(" - ADC: ");
   Serial.print(adc_value);
-  float voltage = ref * ((float)adc_value / max) * 3;
-  Serial.print(" SupCap: ");
+  Serial.print(" - SupCap: ");
   Serial.print(voltage, 3);
   Serial.print("V - ");
   d.vbat = voltage;
@@ -89,7 +110,7 @@ void SensorManager::SensorWake() {
   #if USE_RAK3172
     ltr.enable(true);
   #endif
-  
+  delay(100);
 
   Serial.println("Sensors → Wake");
 }
