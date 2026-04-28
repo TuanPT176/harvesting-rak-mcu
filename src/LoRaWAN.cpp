@@ -142,8 +142,7 @@ void LoRaWAN::begin() {
 
 }
 
-bool  LoRaWAN::uplink_routine()
-{
+bool  LoRaWAN::uplink_routine(){
   /** Payload of Uplink */
   uint8_t data_len = 0;
   collected_data[data_len++] = (uint8_t)g_sensor.temp >> 8;
@@ -187,8 +186,7 @@ bool  LoRaWAN::uplink_routine()
   }
 }
 
-void LoRaWAN::sleep(uint32_t sleeptime)
-{
+void LoRaWAN::sleep(uint32_t sleeptime){
     sensor.SensorSleep();
     Serial.printf("Try sleep %us..\r\n", sleeptime);
     Serial.flush();  // Đợi serial ghi xong
