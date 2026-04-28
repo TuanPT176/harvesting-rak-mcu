@@ -23,10 +23,10 @@ Features:
 
 ```id="h4b3f0"
 .
-├── src/              # Firmware source code
-├── docs/             # Documentation
-├── Hardware/         # Open-source hardware (PCB, schematic)
-└── main.ino          # Main firmware
+├── src/                            # Firmware source code
+├── docs/                           # Documentation
+├── Hardware/                       # Open-source hardware (PCB, schematic)
+└── RainGauge_LoRaWAN_ABP_Lib.ino   # Main firmware
 ```
 
 ---
@@ -44,7 +44,8 @@ Features:
 ## 🔋 Energy Flow
 
 ```id="0t9s6o"
-Solar Panel → NEH7100 → Supercapacitor → MCU (RAK3172)
+Indoor PV Panel → NEH7100 → Supercapacitor → MCU
+                  NEH7100 → MCU
 ```
 
 * NEH7100 handles MPPT and regulation
@@ -60,7 +61,7 @@ Solar Panel → NEH7100 → Supercapacitor → MCU (RAK3172)
 * Multi-sensor support:
 
   * SHTC3 (Temp/Humidity)
-  * LTR303 (Lux - optional)
+  * LTR303 (Lux)
 * Dynamic sleep control
 
 ---
@@ -71,8 +72,8 @@ Solar Panel → NEH7100 → Supercapacitor → MCU (RAK3172)
 
 * RAK3172 / RAK11720
 * NEH7100 PMIC
-* Supercapacitor (≤3.8V)
-* Sensors (SHTC3, optional LTR303)
+* Supercapacitor (Low Leakage-current )
+* Sensors (SHTC3, LTR303)
 
 ---
 
@@ -81,6 +82,7 @@ Solar Panel → NEH7100 → Supercapacitor → MCU (RAK3172)
 * Install Arduino IDE
 * Install RAKwireless BSP in Arduino IDE
 * Select correct board
+* Upload firmware
 
 ---
 
