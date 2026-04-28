@@ -120,14 +120,23 @@ Supports:
 
 # 🧠 Energy-Aware Scheduler
 
-| State | Description                  |
-| ----- | ---------------------------- |
-| 30    | Critical (sleep long, no TX) |
-| 20/21 | Low energy                   |
-| 10/11 | Normal                       |
-| 0     | High energy                  |
+This table defines system behavior based on battery voltage (VBAT) and current conditions.
 
----
+| State | Status Name     | VBAT Condition | Current Condition | LoRa Tx | Sleep (s) | Sleep (min) | Description                          |
+|------:|----------------|----------------|-------------------|---------|-----------|--------------|--------------------------------------|
+| 30    | 🔴 CRITICAL     | < 2.8V         | Any               | ❌ No   | 3600      | 60           | Near shutdown → maximum power saving |
+| 20    | 🟡 LOW - Night  | 2.8–3.0V       | < 40 µA           | ✅ Yes  | 1800      | 30           | Low battery + no energy harvesting   |
+| 21    | 🟡 LOW - Day    | 2.8–3.0V       | ≥ 40 µA           | ✅ Yes  | 1200      | 20           | Low battery but charging             |
+| 10    | 🟢 NORMAL - Night | 3.0–3.3V    | < 40 µA           | ✅ Yes  | 1200      | 20           | Stable but no energy harvesting      |
+| 11    | 🟢 NORMAL - Day | 3.0–3.3V       | ≥ 40 µA           | ✅ Yes  | 900       | 15           | Stable + charging                    |
+| 0     | 🔵 HIGH         | ≥ 3.3V         | Any               | ✅ Yes  | 600       | 10           | Energy surplus                       |
+
+## Notes
+
+- **VBAT**: Battery voltage level.
+- **Current Condition** is used to determine whether energy harvesting (e.g., solar) is active.
+- **LoRa Tx**: Indicates whether LoRa transmission is enabled.
+- Sleep duration dynamically adjusts to conserve power.
 
 # 🛠️ Hardware (Open Source)
 
