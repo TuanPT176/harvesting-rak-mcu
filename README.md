@@ -25,9 +25,23 @@ Features:
 .
 ├── src/                            # Firmware source code
 ├── docs/                           # Documentation
+│   └── node-red/
+│   |   └── flow.json
+|   └──grafana/
+│       └── dashboard.json
 ├── Hardware/                       # Open-source hardware (PCB, schematic)
 └── RainGauge_LoRaWAN_ABP_Lib.ino   # Main firmware
 ```
+
+project/
+├── node-red/
+│   └── flow.json
+├── grafana/
+│   └── dashboard.json
+├── influxdb/
+│   ├── bucket.json
+│   └── sample_data.lp
+└── README.md
 
 ---
 
@@ -183,6 +197,79 @@ lux = 0.07 * CH0 - 0.02 * CH1;
 
 ---
 
+# Backend Server Setup
+
+This project uses the following data pipeline:
+
+TTN → Node-RED (MQTT) → InfluxDB v2.7.12 → Grafana Dashboard
+
+## 1. Architecture Overview
+
+- **TTN (The Things Network)**: Receives LoRaWAN uplink data from the device.
+- **Node-RED**: Subscribes to TTN via MQTT, decodes payload, and forwards data to InfluxDB.
+- **InfluxDB v2.7.12**: Stores time-series data.
+- **Grafana**: Visualizes data through dashboards.
+
+---
+
+## 2. Prerequisites
+
+- A registered TTN application and end-device
+- MQTT API key from TTN
+- Node-RED installed
+- InfluxDB v2.7.12 installed
+- Grafana installed
+
+---
+
+## 3. TTN Configuration
+
+1. Go to your TTN Console.
+2. Create an **Application** and **End Device**.
+3. Navigate to:
+   - **Integrations → MQTT**
+4. Get the following credentials:
+   - Broker: `eu1.cloud.thethings.network` (or your region)
+   - Port: `1883`
+   - Username: `app_id`
+   - Password: `NNSXS...` (API Key)
+
+---
+
+## 4. Node-RED Setup
+
+### Import Flow
+
+Import the provided Node-RED flow:
+
+bash
+node-red/
+└── flow_nodered.json
+
+---
+
+## 4. InfluxDB v2.7.12 Setup
+
+### 1. Requirements
+
+Make sure the following services are already installed and running:
+
+- InfluxDB v2.7.12
+- Node-RED (configured separately)
+
+---
+
+### 2. Configuration Files
+
+Example structure:
+
+```bash
+influxdb/
+├── bucket.json
+├── org.json
+└── sample_data.lp
+
+```
 # 🔬 Future Work
 
 * Adaptive MPPT tuning

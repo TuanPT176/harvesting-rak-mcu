@@ -152,7 +152,7 @@ void StateMachine::handleStateSleep() {
   lora_ptr->sleep(last_decision.sleepTime);
   
   // After sleep, return to IDLE
-  transitionTo(STATE_IDLE);
+  transitionTo(STATE_COLLECT_DECIDE);
 }
 
 void StateMachine::transitionTo(SystemState newState) {
