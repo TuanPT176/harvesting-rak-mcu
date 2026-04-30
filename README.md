@@ -31,17 +31,8 @@ Features:
 │       └── dashboard.json
 ├── Hardware/                       # Open-source hardware (PCB, schematic)
 └── RainGauge_LoRaWAN_ABP_Lib.ino   # Main firmware
-```
-
-project/
-├── node-red/
-│   └── flow.json
-├── grafana/
-│   └── dashboard.json
-├── influxdb/
-│   ├── bucket.json
-│   └── sample_data.lp
 └── README.md
+```
 
 ---
 
