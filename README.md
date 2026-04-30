@@ -270,30 +270,5 @@ influxdb/
 └── sample_data.lp
 
 ```
-# 🔬 Future Work
-
-* Adaptive MPPT tuning
-* OTA firmware update
-* Multi-node synchronization
-* AI-based energy prediction
-
----
-
-# 🤝 Contributing
-
-PRs and issues are welcome!
-
----
-
-
-# 👨‍🔬 Author
-
-Developed for:
-
-* Energy harvesting IoT
-* LoRaWAN research
-* Low-power embedded systems
-
----
 
 🚀 *Autonomous IoT powered by ambient energy*
