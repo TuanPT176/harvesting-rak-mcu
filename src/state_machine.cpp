@@ -10,6 +10,12 @@ StateMachine::StateMachine() : currentState(STATE_INIT), tx_start_time(0) {
   pmic_ptr = nullptr;
   sensor_ptr = nullptr;
   lora_ptr = nullptr;
+  
+  // Initialize last_decision to safe defaults
+  last_decision.sendNow = true;
+  last_decision.sleepTime = 1200;  // 20 phút
+  last_decision.state = 0;
+  last_current_x10 = 0;
 }
 
 void StateMachine::init(NEH7100 *pmic, SensorManager *sensor, LoRaWAN *lora) {
@@ -50,6 +56,7 @@ void StateMachine::handleStateInit() {
 void StateMachine::handleStateCollectDecide() {
   // ============ THU THẬP DỮ LIỆU ============
   sensor_ptr->SensorWake();
+  delay(500);  // Wait for ADC to stabilize after waking up
   pmic_ptr->readAll();
   last_current_x10 = pmic_ptr->getCurrent_uA_x10();
   pmic_ptr->ensureConfig();

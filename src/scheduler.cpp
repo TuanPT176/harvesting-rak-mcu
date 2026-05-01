@@ -58,5 +58,10 @@ Decision makeDecision(float vbat, uint16_t current) {
     // d.sleepTime = 30;
   }
 
+  // 🔧 DEBUG_MODE: Override sleepTime to 30s
+  #if DEBUG_MODE
+  d.sleepTime = 30;
+  #endif
+
   return d;
 }

@@ -1,6 +1,7 @@
 #ifndef config_h
 #define config_h
 #define USE_RAK3172 0
+#define DEBUG_MODE 0  // Set to 1 to enable debug mode (sleepTime = 30s)
 
 
 // Pins

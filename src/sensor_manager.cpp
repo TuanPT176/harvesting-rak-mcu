@@ -49,13 +49,16 @@ SensorData SensorManager::read() {
   const float VOLTAGE_DIVIDER = 3.0; // (2k+1k)/1k
   #endif
   
-  // Read ADC multiple times and average for stability
-  int adc_sum = 0;
-  for (int i = 0; i < 10; i++) {
-    adc_sum += analogRead(VBAT_PIN);
-    delayMicroseconds(100);
+  // Wait for ADC settling after potential wake
+  delay(500);
+  
+  // Read ADC with retry if value seems invalid
+  int adc_value = analogRead(VBAT_PIN);
+  if (adc_value < 50) {
+    // Value too low, likely transient - wait and retry
+    delay(500);
+    adc_value = analogRead(VBAT_PIN);
   }
-  int adc_value = adc_sum / 10;
   
   // Calculate battery voltage: V = (ADC_raw/4095) * Vref * divider_ratio
   float voltage = (adc_value / ADC_MAX) * ADC_REF * VOLTAGE_DIVIDER;

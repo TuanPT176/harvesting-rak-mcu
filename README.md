@@ -33,16 +33,6 @@ Features:
 └── RainGauge_LoRaWAN_ABP_Lib.ino   # Main firmware
 ```
 
-project/
-├── node-red/
-│   └── flow.json
-├── grafana/
-│   └── dashboard.json
-├── influxdb/
-│   ├── bucket.json
-│   └── sample_data.lp
-└── README.md
-
 ---
 
 # ⚙️ System Overview
