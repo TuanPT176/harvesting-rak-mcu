@@ -31,6 +31,10 @@ Features:
 │       └── dashboard.json
 ├── Hardware/                       # Open-source hardware (PCB, schematic)
 └── RainGauge_LoRaWAN_ABP_Lib.ino   # Main firmware
+<<<<<<< HEAD
+=======
+└── README.md
+>>>>>>> 3907604639fd6901fa56a643a7f4c58445ca22bd
 ```
 
 ---
@@ -260,30 +264,5 @@ influxdb/
 └── sample_data.lp
 
 ```
-# 🔬 Future Work
-
-* Adaptive MPPT tuning
-* OTA firmware update
-* Multi-node synchronization
-* AI-based energy prediction
-
----
-
-# 🤝 Contributing
-
-PRs and issues are welcome!
-
----
-
-
-# 👨‍🔬 Author
-
-Developed for:
-
-* Energy harvesting IoT
-* LoRaWAN research
-* Low-power embedded systems
-
----
 
 🚀 *Autonomous IoT powered by ambient energy*
