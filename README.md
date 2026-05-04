@@ -7,7 +7,7 @@ This project is an **energy-harvesting LoRaWAN sensor node** for environmental m
 # 🔗 Live Dashboard (Grafana)
 
 📊 You can monitor real-time data here:
-👉 **[Grafana Dashboard](https://your-grafana-link-here.com)**
+👉 **[Grafana Dashboard](https://link.uit.edu.vn/GrafanaRaingauge)**
 
 Features:
 
@@ -31,10 +31,7 @@ Features:
 │       └── dashboard.json
 ├── Hardware/                       # Open-source hardware (PCB, schematic)
 └── RainGauge_LoRaWAN_ABP_Lib.ino   # Main firmware
-<<<<<<< HEAD
-=======
 └── README.md
->>>>>>> 3907604639fd6901fa56a643a7f4c58445ca22bd
 ```
 
 ---
