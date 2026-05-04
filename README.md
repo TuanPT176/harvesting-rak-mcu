@@ -42,8 +42,6 @@ Features:
 
 ![System Diagram](docs/system_diagram.png)
 
-> 📌 Replace this image with your actual diagram inside `/docs`
-
 ---
 
 ## 🔋 Energy Flow
